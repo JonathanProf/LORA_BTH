@@ -11,7 +11,7 @@ int main(){
     stdio_init_all();
     
     // Initialise UART0 and UART1
-    uart_init(uart0, 115200);
+    uart_init(uart0, 9600);
     uart_init(uart1, 9600);
     
     // Set GPIO pin mux to the UART - 0 is TX, 1 is RX
@@ -34,18 +34,13 @@ int main(){
     gpio_set_dir(LED_PIN, GPIO_OUT);
     
     uint8_t buff[20] = {0};
+    
+    gpio_put(LED_PIN, 0);
 
     while (1)
-    {
-        gpio_put(LED_PIN, 0);
-        sleep_ms(250);
-        gpio_put(LED_PIN, 1);
-        
-        uart_read_blocking(uart0, buff, 5);
-        
-        uart_write_blocking(uart1, buff, 5);
-        
-        sleep_ms(1000);
+    {   
+        uart_read_blocking(uart0, buff, 2);
+        uart_write_blocking(uart1, buff, 2);
     }
     
 }
